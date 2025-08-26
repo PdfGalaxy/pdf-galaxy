@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Galaxy - Professional PDF Tools</title>
+    <meta name="description" content="Convert images to PDF, text to PDF, PDF to images, and extract text from PDFs with our professional online tools.">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- External Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+    
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Header Section -->
+    <header class="header">
+        <div class="container">
+            <h1 class="logo">PDF Galaxy</h1>
+            <p class="tagline">Professional PDF Tools for the Digital Universe</p>
+        </div>
+    </header>
+
+    <!-- AdSense Banner Placeholder 1 -->
+    <div class="ad-banner ad-banner-top">
+        <div class="ad-placeholder">
+            <span>Advertisement</span>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main id="main-content" class="main-content">
+        <div class="container">
+            <!-- Photo to PDF Tool -->
+            <section class="tool-card" id="photo-to-pdf">
+                <div class="card-header">
+                    <h2>📷 Photo → PDF</h2>
+                    <p>Convert your images to high-quality PDF documents</p>
+                </div>
+                <div class="card-content">
+                    <div class="upload-area" id="photo-upload-area">
+                        <input type="file" id="photo-input" accept="image/*" hidden>
+                        <div class="upload-placeholder">
+                            <span class="upload-icon">📁</span>
+                            <p>Click to select an image or drag and drop</p>
+                            <small>Supports JPG, PNG, GIF, WebP</small>
+                        </div>
+                    </div>
+                    <div class="preview-area" id="photo-preview" style="display: none;">
+                        <img id="photo-preview-img" alt="Preview">
+                        <div class="action-buttons">
+                            <button class="btn btn-primary" onclick="convertPhotoToPDF()">Convert to PDF</button>
+                            <button class="btn btn-secondary" onclick="resetPhotoTool()">Reset</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AdSense Banner Placeholder 2 -->
+            <div class="ad-banner ad-banner-middle">
+                <div class="ad-placeholder">
+                    <span>Advertisement</span>
+                </div>
+            </div>
+
+            <!-- Text to PDF Tool -->
+            <section class="tool-card" id="text-to-pdf">
+                <div class="card-header">
+                    <h2>📝 Text & Files → PDF</h2>
+                    <p>Transform your text and documents into professional PDF files</p>
+                </div>
+                <div class="card-content">
+                    <!-- File Upload Section -->
+                    <div class="file-upload-section">
+                        <div class="upload-area" id="text-file-upload-area">
+                            <input type="file" id="text-file-input" accept=".txt,.doc,.docx,.rtf,.csv,.xls,.xlsx" hidden>
+                            <div class="upload-placeholder">
+                                <span class="upload-icon">📄</span>
+                                <p>Upload Document Files</p>
+                                <small>Supports TXT, DOC, DOCX, RTF, CSV, XLS, XLSX</small>
+                            </div>
+                        </div>
+                        <div class="divider">
+                            <span>OR</span>
+                        </div>
+                    </div>
+                    
+                    <!-- Text Input Section -->
+                    <textarea id="text-input" placeholder="Enter your text here..." rows="10"></textarea>
+                    <div class="action-buttons">
+                        <button class="btn btn-primary" onclick="convertTextToPDF()">Convert to PDF</button>
+                        <button class="btn btn-secondary" onclick="clearText()">Clear Text</button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PDF to Image Tool -->
+            <section class="tool-card" id="pdf-to-image">
+                <div class="card-header">
+                    <h2>🖼️ PDF → Image</h2>
+                    <p>Convert PDF pages into high-quality images</p>
+                </div>
+                <div class="card-content">
+                    <div class="upload-area" id="pdf-upload-area">
+                        <input type="file" id="pdf-input" accept=".pdf" hidden>
+                        <div class="upload-placeholder">
+                            <span class="upload-icon">📄</span>
+                            <p>Click to select a PDF or drag and drop</p>
+                            <small>Supports PDF files only</small>
+                        </div>
+                    </div>
+                    <div class="preview-area" id="pdf-preview" style="display: none;">
+                        <div class="loading" id="pdf-loading">Converting PDF pages...</div>
+                        <div id="pdf-images-container"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AdSense Banner Placeholder 3 -->
+            <div class="ad-banner ad-banner-middle">
+                <div class="ad-placeholder">
+                    <span>Advertisement</span>
+                </div>
+            </div>
+
+            <!-- PDF to Text Tool -->
+            <section class="tool-card" id="pdf-to-text">
+                <div class="card-header">
+                    <h2>📋 PDF → Text</h2>
+                    <p>Extract text content from your PDF documents</p>
+                </div>
+                <div class="card-content">
+                    <div class="upload-area" id="pdf-text-upload-area">
+                        <input type="file" id="pdf-text-input" accept=".pdf" hidden>
+                        <div class="upload-placeholder">
+                            <span class="upload-icon">📄</span>
+                            <p>Click to select a PDF or drag and drop</p>
+                            <small>Text will be extracted from all pages</small>
+                        </div>
+                    </div>
+                    <div class="preview-area" id="pdf-text-preview" style="display: none;">
+                        <div class="loading" id="pdf-text-loading">Extracting text...</div>
+                        <div class="text-output">
+                            <textarea id="extracted-text" readonly rows="15" placeholder="Extracted text will appear here..."></textarea>
+                            <div class="action-buttons">
+                                <button class="btn btn-primary" onclick="downloadExtractedText()">Download as TXT</button>
+                                <button class="btn btn-secondary" onclick="copyExtractedText()">Copy Text</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- AdSense Banner Placeholder 4 -->
+    <div class="ad-banner ad-banner-bottom">
+        <div class="ad-placeholder">
+            <span>Advertisement</span>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 PDF Galaxy. Professional PDF tools for everyone.</p>
+            <p class="footer-note">All conversions are performed locally in your browser for maximum privacy and security.</p>
+        </div>
+    </footer>
+
+    <!-- Thank You Modal -->
+    <div id="thank-you-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <span class="modal-close" onclick="closeThankYouModal()">&times;</span>
+            <div class="modal-header">
+                <h3>🌟 Thank You!</h3>
+            </div>
+            <div class="modal-body">
+                <p>Your file has been processed successfully!</p>
+                <p>Thank you for using PDF Galaxy.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Scripts -->
+    <script src="script.js"></script>
+</body>
+</html>
